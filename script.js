@@ -37,6 +37,10 @@ $("#searchBtn").on("click", function(event) {
 
 // Create a function to search for city's weather
 
+
+//Convert temp from kelvin to fahrenheit
+var convertF = (response.main.temp - 273.15) * 1.8 + 32;
+
 // append HTML search history
 //"on click" for search history buttons
 
