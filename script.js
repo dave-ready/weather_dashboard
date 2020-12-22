@@ -1,10 +1,7 @@
-
-
 var currentDate = moment().format("L"); 
+var cityName = $("#citySearch").val();
 
 var apiKey = "7fd432db80c8966a57818fd7382af9b7";
-
-var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=" + apiKey + "&q=" + cityName;
 
 //trigger search button to search for city
 
@@ -43,8 +40,9 @@ $.ajax({
     console.log(response.wind.speed)
 
     currentWeatherSearch(response);
+    searchHistoryList();
     //fiveDayForecastSearch();
-    //searchHistoryList();
+    
 
     });
 
@@ -88,20 +86,60 @@ $("#currentWeather").append(cardEl)
 
 // append search history to HTML - searchHistoryList() function
 
-function searchHistoryList() {
-    var searchItem = $("<li>").addClass("list-group-item").text(cityName);
+//function searchHistoryList() {
+//var searchItem = $("<li>").addClass("list-group-item").text(cityName);
+//$(".list").append(searchItem);
 
-}  // end of searchHistoryList() function
+function searchHistoryList() {
+    var lastCity = JSON.parse(localStorage.getItem("cityName"));
+    console.log(lastCity)
+    var searchHistBtn = $("<button class='btn border mt-1 shadow-sm bg-white rounded' style='width: 15rem;'>");
+    var searchHist = $("<div>").text(cityName);
+    searchHist.append(searchHistBtn);
+    $("#searchHistory").prepend(searchHist);
+}
+
+//function currentForecastSearch() {
+
+//var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=" + apiKey + "&q=" + cityName;
+
+//api call for forecast
+//    $.ajax({
+//      url: queryURL2
+//      method: "GET"
+//    }).then(function (response){
+//
+//      console.log(response)
+//      console.log(response.dt)
+//
+//      $('#fiveDays').empty();
+
+//for loop to get 5-days?
+//variable to hold the forecast
+
+//var forecast = response.list;
+//console.log(forecast);
+
+//for (var i = 0; i < results.length; i++) {
+//}
+//}
+
+
+
+
+
+
+
 
 
 
 
 //save to local storage
-var storageArray = [];
-var storedText = $(this).siblings("input").val();
+//var storageArray = [];
+//var storedText = $(this).siblings("input").val();
 
-storageArray.push(storedText);
-localStorage.setItem("cityName", JSON.stringify(storageArray));
+//storageArray.push(storedText);
+//localStorage.setItem("cityName", JSON.stringify(storageArray));
 
 
 //five day forecast function
