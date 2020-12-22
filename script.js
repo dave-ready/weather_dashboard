@@ -3,14 +3,16 @@ var cityName = $("#citySearch").val();
 
 var currentDate = moment().format(); 
 
-var apiKey = "42709480618f4f67c2c902c0781e5e4a";
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
-var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey;
+var apiKey = "7fd432db80c8966a57818fd7382af9b7";
+//var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
+//var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey;
+
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?&units=imperial&appid=" + apiKey + "&q=" + cityName;
 
 
 // Create a function to search for city's weather
 
-function currentWeatherSearch (response) {
+function currentWeatherSearch() {
 
 //Convert temp from kelvin to fahrenheit
 var convertF = (response.main.temp - 273.15) * 1.8 + 32;
@@ -26,9 +28,10 @@ $.ajax({
 }).then(function(response) {
     console.log(queryURL);
     console.log(response);
-
+});
 
 // create HTML elements for weather data
+
 var cardEl = $("<div>").addClass("card");
 var cardBodyEl = $("<div>").addClass("card-body");
 
@@ -36,7 +39,6 @@ var cityNameEl = $("<h3>").addClass("city-name").text(response.name);
 var dateEl = cityNameEl.append(" " + currentDate);
 var tempEl = $("<p>").addClass("card-text current-temp").text("Temperature:" + " " + convertF + " " + "°F");
 var currentWeather = response.weather[0].main;
-var weatherIMG = $("<img>").attr("src", "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
 var windSpeedEl = $("<p>").addClass("card-text current-wind").text("Wind Speed:" + " " + response.wind.speed + " " + "MPH");
 var humidityEl = $("<p>").addClass("card-text current-humidity").text("Humidity:" + " " + response.main.humidity + "%");
 
@@ -47,8 +49,31 @@ cardBodyEl.append(cityNameEl, tempEl, humidityEl, windSpeedEl);
 cardEl.append(cardBodyEl);
 $("#currentWeather").append(cardEl)
 
+// add weather icon for the appropriate weather -- If/Else statement??
+
+if (currentWeather === "rain") {
+    var weatherIMG = $("<img>").attr("src", "https://openweathermap.org/img/wn/09d.png");
+        weatherIMG.attr("style", "height: 50px; width: 50px");
+
+} else if (currentWeather=== "Clouds") {
+    var weatherIMG  = $('<img>').attr("src", "http://openweathermap.org/img/wn/03d.png");
+        weatherIMG.attr("style", "height: 50px; width: 50px");
+
+} else if (currentWeather === "Clear") {
+    var weatherIMG = $('<img>').attr("src", "http://openweathermap.org/img/wn/01d.png");
+        weatherIMG.attr("style", "height: 50px; width: 50px");
+
+} else if (currentWeather === "Drizzle") {
+    var weatherIMG = $('<img>').attr("src", "http://openweathermap.org/img/wn/10d.png");
+        weatherIMG.attr("style", "height: 50px; width: 50px");
+
+} else if (currentWeather === "Snow") {
+    var weatherIMG = $('<img>').attr("src", "http://openweathermap.org/img/wn/13d.png");
+        weatherIMG.attr("style", "height: 50px; width: 50px");
 }
-currentWeatherSearch(citySearch)
+
+}
+//currentWeatherSearch()
 
 //on click
 $("#searchBtn").on("click", function(event) {
@@ -60,7 +85,7 @@ $("#searchBtn").on("click", function(event) {
     var storageArray = [];
     var storedText = $(this).siblings("input").val();
 
-    storageArray.push(textContent);
+    storageArray.push(storedText);
     localStorage.setItem("cityName", JSON.stringify(storageArray));
 
 })
@@ -70,7 +95,7 @@ $("#searchBtn").on("click", function(event) {
 // append HTML search history
 //"on click" for search history buttons
 
-// add weather icon for the appropriate weather -- If/Else statement??
+
 
 // UV index - api call
 // if/else statement to determine color
