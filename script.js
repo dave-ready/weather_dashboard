@@ -4,9 +4,9 @@ var currentDate = moment().format("L");
 
 var apiKey = "7fd432db80c8966a57818fd7382af9b7";
 
-//var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=" + apiKey + "&q=" + cityName;
+var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=" + apiKey + "&q=" + cityName;
 
-//trigger search butto to search for city
+//trigger search button to search for city
 
 $("#citySearch").keypress(function(event) {
 
@@ -50,10 +50,6 @@ $.ajax({
 
 });
 
-
-
-
-
 // Create a function to search for city's weather
 
 function currentWeatherSearch(response) {
@@ -75,35 +71,10 @@ var weatherIMG = $("<img>").attr("src", "https://openweathermap.org/img/w/" + re
 var windSpeedEl = $("<p>").addClass("card-text current-wind").text("Wind Speed:" + " " + response.wind.speed + " " + "MPH");
 var humidityEl = $("<p>").addClass("card-text current-humidity").text("Humidity:" + " " + response.main.humidity + "%");
 
-
-// add weather icon for the appropriate weather -- If/Else statement??
-
-//if (currentWeather === "rain") {
-//    var weatherIMG = $("<img>").attr("src", "https://openweathermap.org/img/wn/09d.png");
-//        weatherIMG.attr("style", "height: 50px; width: 50px");
-
-//} else if (currentWeather=== "Clouds") {
-//    var weatherIMG  = $('<img>').attr("src", "http://openweathermap.org/img/wn/03d.png");
-//        weatherIMG.attr("style", "height: 50px; width: 50px");
-
-//} else if (currentWeather === "Clear") {
-//    var weatherIMG = $('<img>').attr("src", "http://openweathermap.org/img/wn/01d.png");
-//        weatherIMG.attr("style", "height: 50px; width: 50px");
-
-//} else if (currentWeather === "Drizzle") {
-//    var weatherIMG = $('<img>').attr("src", "http://openweathermap.org/img/wn/10d.png");
-//        weatherIMG.attr("style", "height: 50px; width: 50px");
-
-//} else if (currentWeather === "Snow") {
-//    var weatherIMG = $('<img>').attr("src", "http://openweathermap.org/img/wn/13d.png");
-//        weatherIMG.attr("style", "height: 50px; width: 50px");
-//}
-
 //empty div to hold text content
 //var newDiv = $('<div>');
 //newDiv.append(displayMainDate, currentIcon, tempEL, humEl, windEl);
 //$("#currentCity").html(newDiv);
-
 
 //Append Elements to page
 cityNameEl.append(dateEl, weatherIMG);
@@ -111,9 +82,16 @@ cardBodyEl.append(cityNameEl, tempEl, humidityEl, windSpeedEl);
 cardEl.append(cardBodyEl);
 $("#currentWeather").append(cardEl)
 
-} //End of function
+} //End of currentWeatherSearch() function
 
 
+
+// append search history to HTML - searchHistoryList() function
+
+function searchHistoryList() {
+    var searchItem = $("<li>").addClass("list-group-item").text(cityName);
+
+}  // end of searchHistoryList() function
 
 
 
