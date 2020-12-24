@@ -33,19 +33,28 @@ $.ajax({
     console.log(queryURL);
     console.log(response);
     console.log(response.name)
-
-
     console.log(response.main.temp);
     console.log(response.main.humidity)
     console.log(response.wind.speed)
 
+var lon = response.coord.lon;
+var lat = response.coord.lat;
+var queryURL3 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+
+
+$.ajax({
+    url: queryURL3,
+    method: "GET"
+}).then(function(response) {
+    console.log(response)
+    
+});
+
     currentWeatherSearch(response);
     searchHistoryList();
     //fiveDayForecastSearch();
+    }); 
     
-
-    });
-
 });
 
 // Create a function to search for city's weather
@@ -56,6 +65,7 @@ $('#currentWeather').empty();
 
 var temperature = response.main.temp;
 console.log(temperature)
+
 
 // create HTML elements for weather data
 
@@ -69,35 +79,46 @@ var weatherIMG = $("<img>").attr("src", "https://openweathermap.org/img/w/" + re
 var windSpeedEl = $("<p>").addClass("card-text current-wind").text("Wind Speed:" + " " + response.wind.speed + " " + "MPH");
 var humidityEl = $("<p>").addClass("card-text current-humidity").text("Humidity:" + " " + response.main.humidity + "%");
 
-//empty div to hold text content
-//var newDiv = $('<div>');
-//newDiv.append(displayMainDate, currentIcon, tempEL, humEl, windEl);
-//$("#currentCity").html(newDiv);
+//if/else statement for uv index
+var uvIndex = response.value;
+
+if (uvIndex > 10) {
+    color = "red";
+
+} else if (uvIndex > 4) {
+    color = "orange";
+
+} else {
+    color = "green";
+}
+
+var uvSpan = $("<span>").text(uvIndex).attr("color", color);
+var uviEl = $("<p>").text("UV Index:" + " ").append(uvSpan);
+
+//why undefined???
+console.log(uvIndex)
+
 
 //Append Elements to page
 cityNameEl.append(dateEl, weatherIMG);
-cardBodyEl.append(cityNameEl, tempEl, humidityEl, windSpeedEl);
+cardBodyEl.append(cityNameEl, tempEl, humidityEl, windSpeedEl, uviEl);
 cardEl.append(cardBodyEl);
 $("#currentWeather").append(cardEl)
 
 } //End of currentWeatherSearch() function
 
 
-
 // append search history to HTML - searchHistoryList() function
-
-//function searchHistoryList() {
-//var searchItem = $("<li>").addClass("list-group-item").text(cityName);
-//$(".list").append(searchItem);
 
 function searchHistoryList() {
     var lastCity = JSON.parse(localStorage.getItem("cityName"));
     console.log(lastCity)
     var searchHistBtn = $("<button class='btn border mt-1 shadow-sm bg-white rounded' style='width: 15rem;'>");
-    var searchHist = $("<div>").text(cityName);
+    var searchHist = $("<ul>").text(cityName);
     searchHist.append(searchHistBtn);
     $("#searchHistory").prepend(searchHist);
-}
+
+}//......end of searchHistoryList() function
 
 //function currentForecastSearch() {
 
@@ -129,11 +150,6 @@ function searchHistoryList() {
 
 
 
-
-
-
-
-
 //save to local storage
 //var storageArray = [];
 //var storedText = $(this).siblings("input").val();
@@ -145,7 +161,3 @@ function searchHistoryList() {
 //five day forecast function
 // 5 day forecast - api call
 //"on click" for search history buttons
-// UV index - api call
-// if/else statement to determine uv color
-
-//var uvIndex = lat and lon??
