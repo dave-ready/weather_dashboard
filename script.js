@@ -1,7 +1,7 @@
 var currentDate = moment().format("L"); 
 var cityName = $("#citySearch").val();
 
-var apiKey = "7fd432db80c8966a57818fd7382af9b7";
+var apiKey = "&appid=7fd432db80c8966a57818fd7382af9b7";
 
 //trigger search button to search for city
 
@@ -21,10 +21,10 @@ $("#searchBtn").on("click", function() {
 var cityName = $("#citySearch").val();
 
 //clears input field after search
-$("#citySearch").val("");
+//$("#citySearch").val("");
 
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?&units=imperial&appid=" + apiKey + "&q=" + cityName;
-
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?&units=imperial" + apiKey + "&q=" + cityName;
+               
 //ajax call
 $.ajax({
     url: queryURL,
@@ -37,25 +37,14 @@ $.ajax({
     console.log(response.main.humidity)
     console.log(response.wind.speed)
 
-var lon = response.coord.lon;
-var lat = response.coord.lat;
-var queryURL3 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
-
-
-$.ajax({
-    url: queryURL3,
-    method: "GET"
-}).then(function(response) {
-    console.log(response)
-    
-});
 
     currentWeatherSearch(response);
+    fiveDayForecastSearch();
     searchHistoryList();
-    //fiveDayForecastSearch();
-    }); 
+}); 
     
 });
+
 
 // Create a function to search for city's weather
 
@@ -79,6 +68,23 @@ var weatherIMG = $("<img>").attr("src", "https://openweathermap.org/img/w/" + re
 var windSpeedEl = $("<p>").addClass("card-text current-wind").text("Wind Speed:" + " " + response.wind.speed + " " + "MPH");
 var humidityEl = $("<p>").addClass("card-text current-humidity").text("Humidity:" + " " + response.main.humidity + "%");
 
+var lon = response.coord.lon;
+var lat = response.coord.lat;
+var queryURL3 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + apiKey;
+console.log(cityName)
+
+//run api call for UV Index
+$.ajax({
+    url: queryURL3,
+    method: "GET"
+}).then(function(response) {
+    console.log(response)
+    console.log(lon);
+    console.log(lat);
+    console.log(response.value);
+    console.log(queryURL3)
+    
+
 //if/else statement for uv index
 var uvIndex = response.value;
 
@@ -92,10 +98,8 @@ if (uvIndex > 10) {
     color = "green";
 }
 
-var uvSpan = $("<span>").text(uvIndex).attr("color", color);
+var uvSpan = $("<span>").text(uvIndex).css("background-color", color);
 var uviEl = $("<p>").text("UV Index:" + " ").append(uvSpan);
-
-//why undefined???
 console.log(uvIndex)
 
 
@@ -104,6 +108,8 @@ cityNameEl.append(dateEl, weatherIMG);
 cardBodyEl.append(cityNameEl, tempEl, humidityEl, windSpeedEl, uviEl);
 cardEl.append(cardBodyEl);
 $("#currentWeather").append(cardEl)
+
+});
 
 } //End of currentWeatherSearch() function
 
@@ -120,30 +126,41 @@ function searchHistoryList() {
 
 }//......end of searchHistoryList() function
 
-//function currentForecastSearch() {
+function fiveDayForecastSearch(response) {
 
-//var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&appid=" + apiKey + "&q=" + cityName;
+var cityName = $("#citySearch").val();
+var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperial" + apiKey + "&q=" + cityName;
+    console.log(queryURL2);
+    console.log(cityName);
 
 //api call for forecast
-//    $.ajax({
-//      url: queryURL2
-//      method: "GET"
-//    }).then(function (response){
-//
-//      console.log(response)
-//      console.log(response.dt)
-//
-//      $('#fiveDays').empty();
+    $.ajax({
+      url: queryURL2,
+      method: "GET"
+    }).then(function (response){
+      
+      console.log(response);
+     
+
+      $('#fiveDays').empty();
 
 //for loop to get 5-days?
 //variable to hold the forecast
 
-//var forecast = response.list;
-//console.log(forecast);
+var fiveDayForecast = response.list;
+var temperature = fiveDayForecast[1].temp;
+console.log(fiveDayForecast);
+console.log(temperature);
 
-//for (var i = 0; i < results.length; i++) {
-//}
-//}
+for (var i = 0; i < fiveDayForecast.length; i++) {
+
+}
+
+
+});
+
+}
+ 
 
 
 
