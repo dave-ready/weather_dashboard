@@ -14,6 +14,8 @@ $("#citySearch").keypress(function(event) {
    }
 });
 
+var date = new Date();
+
 //on click
 $("#searchBtn").on("click", function() {
 
@@ -39,7 +41,7 @@ $.ajax({
 
 
     currentWeatherSearch(response);
-    fiveDayForecastSearch();
+    fiveDayForecastSearch(response);
     searchHistoryList();
 }); 
     
@@ -126,6 +128,7 @@ function searchHistoryList() {
 
 }//......end of searchHistoryList() function
 
+
 function fiveDayForecastSearch(response) {
 
 var cityName = $("#citySearch").val();
@@ -137,22 +140,29 @@ var queryURL2 = "https://api.openweathermap.org/data/2.5/forecast?&units=imperia
     $.ajax({
       url: queryURL2,
       method: "GET"
-    }).then(function (response){
+    }).then(function (response) {
       
       console.log(response);
-     
+      console.log(response.list);
+      
+     $('#fiveDays').empty();
 
-      $('#fiveDays').empty();
 
-//for loop to get 5-days?
 //variable to hold the forecast
 
 var fiveDayForecast = response.list;
-var temperature = fiveDayForecast[1].temp;
 console.log(fiveDayForecast);
-console.log(temperature);
 
+
+//for loop to append 5 days
 for (var i = 0; i < fiveDayForecast.length; i++) {
+
+var day = Number(fiveDayForecast[i].dt_txt.split("-")[2].split(" ")[0]);
+var time = fiveDayForecast[i].dt_txt.split("-")[2].split(" ")[1];
+    
+console.log(day);
+console.log(time);
+
 
 }
 
