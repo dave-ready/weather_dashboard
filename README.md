@@ -7,6 +7,8 @@
   The app can be viewed at:
   
  SCREENSHOTS
+ <img width="1440" alt="weather_dashboard1" src="https://user-images.githubusercontent.com/73320561/103241714-0bc35b00-4922-11eb-8888-0d0eb24c79f0.png">
+<img width="1440" alt="weather_dashboard2" src="https://user-images.githubusercontent.com/73320561/103241717-0e25b500-4922-11eb-8a96-587411c2f5b6.png">
  
 
   
