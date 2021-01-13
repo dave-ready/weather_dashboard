@@ -157,12 +157,6 @@ console.log(fiveDayForecast);
 //for loop to append 5 days
 for (var i = 0; i < fiveDayForecast.length; i++) {
 
-var day = Number(fiveDayForecast[i].dt_txt.split("-")[2].split(" ")[0]);
-var time = fiveDayForecast[i].dt_txt.split("-")[2].split(" ")[1];
-    
-console.log(day);
-console.log(time);
-
 //create HTML elements for five day forecast
 if(fiveDayForecast[i].dt_txt.indexOf("12:00:00") !== -1) {
   var temperature = fiveDayForecast[i].main.temp;
